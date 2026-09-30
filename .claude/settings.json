@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(aws --profile yt-admin:*)",
+      "Read(~/.aws/sso/cache/**)",
+
+      "Bash(aws * delete*)",
+      "Read(.env)",
+      "Bash(terraform import:*)",
+      "Bash(terraform state rm:*)",
+      "Bash(terraform state mv:*)",
+      "Bash(terraform force-unlock:*)",
+      "Bash(aws s3 rm:*)",
+      "Bash(aws s3 rb:*)",
+      "Bash(aws s3 mv:*)",
+      "Bash(aws * terminate*)",
+      "Bash(aws * --profile yt-admin*)",
+      "Read(**/.env*)",
+      "Read(~/.aws/**)",
+      "Read(**/*.tfstate*)",
+      "Read(**/client_secret*.json)",
+      "Read(**/*token*.json)"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+# Terraform：state には機密情報が平文で入ることがある
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+crash.log
+*.tfplan
+
+# 認証情報
+.env
+.env.*
+client_secret*.json
+*token*.json
+
+# ローカルに置くデータ（clips.db のスナップショットなど）
+data/
+*.db
+*.sqlite*
+*.parquet
+
+# dbt
+transform/target/
+transform/dbt_packages/
+transform/logs/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS / エディタ
+.DS_Store
+
+# ローカルのメモ（機密情報を含む）
+aws-setting.txt
