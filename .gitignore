@@ -12,6 +12,7 @@ crash.log
 .env.*
 client_secret*.json
 *token*.json
+secrets/
 
 # ローカルに置くデータ（clips.db のスナップショットなど）
 data/

@@ -39,8 +39,10 @@
 - 書き込みが必要な操作は、コマンドを提示して私に実行を依頼すること
 
 # 手動操作の例外
-- 「コンソールで手動操作しない」の例外は、`docs/setup/aws-account-setup.md` に書いた初期設定だけ
-  （アカウント作成、ルートの MFA、Budgets、IAM Identity Center、権限セット）
+- 「コンソールで手動操作しない」の例外は、次の手順書に書いた初期設定だけ
+  - `docs/setup/aws-account-setup.md`（アカウント作成、ルートの MFA、Budgets、IAM Identity Center、権限セット）
+  - `docs/setup/google-cloud-setup.md`（分析用の Google Cloud プロジェクト、API の有効化、OAuth 同意画面、OAuth クライアント。ADR-0006）
+- Google Cloud 側で API を呼んで行う作業（Reporting ジョブの作成など）は、手で行わずスクリプトにする
 - それ以外のリソースはすべて Terraform で作る。コンソールで作ったものを見つけたら、Terraform に取り込むか削除するかを提案すること
 
 # 公開リポジトリとしての注意

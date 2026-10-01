@@ -33,7 +33,7 @@
 | YouTube Analytics API | 動画 × 日の再生数・高評価・視聴時間、動画内の位置ごとの視聴者維持率 | 過去の期間も後から問い合わせられる |
 | YouTube Reporting API | サムネイルのインプレッション数とクリック率（レポート `channel_reach_basic_a1`） | Analytics API にない指標。ジョブを作った日の30日前より古い分は取れない。レポートは生成から60日（さかのぼって作られた分は30日）で消える |
 
-どちらの YouTube API も、APIキーでは使えず、チャンネル所有者の OAuth 認証が要る。
+どちらの YouTube API も、APIキーでは使えず、チャンネル所有者の OAuth 認証が要る。認証には test-app と別の Google Cloud プロジェクトを使い、同意画面は本番にする（ADR-0006）。
 
 ### 分析に使えるサンプル数
 
@@ -123,6 +123,7 @@ s3://<data>/curated/clips_db/<テーブル>/snapshot_date=YYYY-MM-DD/part-0.parq
 | バケットは用途ごとに3つ。スナップショットは全量を日付のパーティションで残す | [ADR-0003](adr/0003-s3-layout.md) |
 | アップロードは、data バケットに書くだけの権限セット `yt-uploader` で行う | [ADR-0004](adr/0004-upload-permissions.md) |
 | テーブル定義は Terraform で書き、パーティションは射影で扱う | [ADR-0005](adr/0005-athena-table-definitions.md) |
+| YouTube API の認証は、test-app と別の Google Cloud プロジェクトで行い、同意画面を本番にする | [ADR-0006](adr/0006-google-cloud-oauth.md) |
 
 **完了条件:** clips.db のスナップショットを S3 に置き、Athena で SQL が打てる。
 
@@ -142,9 +143,6 @@ s3://<data>/curated/clips_db/<テーブル>/snapshot_date=YYYY-MM-DD/part-0.parq
 
 | 項目 | 内容 | 決める時期 |
 |---|---|---|
-| OAuth 同意画面を「本番」に切り替えるか | 「テスト」のままではトークンが7日で失効する（test-app の投稿も毎週止まっている可能性がある）。本番にしても審査を受けなければ「未確認のアプリ」の警告が出て、利用者数に上限がある。個人利用なら警告を進めればよい見込み | フェーズ1と並行する作業の前 |
-| Google Cloud での作業を手動操作の例外に含めるか | 同意画面の切り替えと Reporting ジョブの作成は、Terraform の外で行う作業。CLAUDE.md の「手動操作の例外」には AWS の初期設定しか書いていない | 同上 |
-| OAuth クライアントを test-app と共用するか | 分けておくと、片方を失効させてももう片方に影響しない | 同上 |
 | `yt-readonly` から state を読めないようにするか | ReadOnlyAccess は全バケットの読み取りを許可する。tfstate バケットのバケットポリシーで拒否する案がある（ADR-0004） | tfstate バケットの実装時 |
 | バケット名の付け方 | 公開リポジトリなので、アカウントIDを入れない（ADR-0001） | フェーズ1の実装時 |
 | 過去のバックアップを取り込むか | test-app の `data/clips.db.bak.*`（2026-07-02〜09-06、15個）を過去のスナップショットとして使えるか（ADR-0003） | フェーズ1の実装時 |
